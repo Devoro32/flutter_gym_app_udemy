@@ -23,15 +23,6 @@ class WorkoutCategoryWidget extends StatelessWidget {
         //navigate to a new screen
         InkWell(
           onTap: () {
-            // Navigator.of(context).push(
-            //   MaterialPageRoute(
-            //     builder: (context) {
-            //       return ExerciseListPage(
-            //         title: workOutCategoryModel.categoryName,
-            //       );
-            //     },
-            //   ),
-            // );
             Navigator.of(context).pushNamed(
               ExerciseListPage.routeName,
               arguments: workOutCategoryModel.categoryName,
