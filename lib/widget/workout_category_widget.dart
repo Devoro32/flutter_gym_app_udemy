@@ -2,6 +2,7 @@
 //76
 
 import 'package:flutter/material.dart';
+import 'package:gym_app/data/exercise.dart';
 
 import 'package:gym_app/models/workout_category_model.dart';
 import 'package:gym_app/screens/exercise_list_page.dart';
@@ -23,10 +24,15 @@ class WorkoutCategoryWidget extends StatelessWidget {
         //navigate to a new screen
         InkWell(
           onTap: () {
-            Navigator.of(context).pushNamed(
-              ExerciseListPage.routeName,
-              arguments: workOutCategoryModel.categoryName,
-            );
+            Navigator.of(context)
+                .pushNamed(ExerciseListPage.routeName, arguments: {
+              'title': workOutCategoryModel.categoryName,
+              //83
+              'listOfExercise': exerciseList
+                  .where((element) =>
+                      element.category == workOutCategoryModel.categoryName)
+                  .toList(),
+            });
           },
           child: ClipRRect(
             borderRadius: BorderRadius.circular(20),

@@ -52,13 +52,6 @@ class HomePage extends StatelessWidget {
               const Divider(
                 color: Colors.black,
               ),
-              //to be able to use a widget in a string, need to use '...' in front of the  widget
-              // ...workoutCategoryList
-              //     .map(
-              //       (e) => WorkoutCategoryWidget(workOutCategoryModel: e),
-              //     )
-              //     .toList(),
-              //76
               Expanded(
                 child: ListView.builder(
                   physics: const BouncingScrollPhysics(),
