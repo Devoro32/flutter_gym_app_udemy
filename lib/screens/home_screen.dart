@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gym_app/data/exercise.dart';
 import 'package:gym_app/data/workout_category_list.dart';
+import 'package:gym_app/screens/bmi_calculator.dart';
+import 'package:gym_app/screens/filter_page.dart';
 import 'package:gym_app/widget/exercise_card_widget.dart';
 import 'package:gym_app/widget/workout_category_widget.dart';
 
@@ -19,7 +21,41 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: const Drawer(),
+        drawer: Drawer(
+          child: Column(
+            children: [
+              Container(
+                height: 100,
+                width: double.infinity,
+                color: const Color(0xff322751),
+                child: const Padding(
+                  padding: EdgeInsets.only(left: 20.0, top: 50),
+                  child: Text(
+                    'GYMGUIDE',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                    ),
+                  ),
+                ),
+              ),
+              ListTile(
+                title: const Text('BMI Calculator'),
+                onTap: () {
+                  Navigator.of(context).pushNamed(BMICalculatorPage.routeName);
+                },
+              ),
+              const Divider(color: Colors.grey),
+              ListTile(
+                title: const Text('Filter'),
+                onTap: () {
+                  Navigator.of(context).pushNamed(FilterPage.routeName);
+                },
+              ),
+            ],
+          ),
+        ),
         //86
         bottomNavigationBar: BottomNavigationBar(
             onTap: (value) {

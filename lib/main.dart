@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gym_app/data/exercise.dart';
 import 'package:gym_app/models/exercise_model.dart';
+import 'package:gym_app/screens/bmi_calculator.dart';
 import 'package:gym_app/screens/exercise_detail_page.dart';
 import 'package:gym_app/screens/exercise_list_page.dart';
+import 'package:gym_app/screens/filter_page.dart';
 
 import 'screens/home_screen.dart';
 
@@ -51,6 +53,8 @@ class _MyAppState extends State<MyApp> {
       routes: {
         HomePage.routeName: (context) => HomePage(),
         ExerciseListPage.routeName: (context) => const ExerciseListPage(),
+        BMICalculatorPage.routeName: (context) => const BMICalculatorPage(),
+        FilterPage.routeName: (context) => const FilterPage(),
         ExerciseDetailPage.routeName: (context) => ExerciseDetailPage(
               toggleFavourite: _toggleIsFavourite,
             ),
