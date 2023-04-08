@@ -18,6 +18,11 @@ class MyApp extends StatelessWidget {
       title: 'Gym App',
       //set the theme globally
       theme: ThemeData(
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          backgroundColor: Color(0xff322751),
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.grey,
+        ),
         appBarTheme: const AppBarTheme(
           backgroundColor: Color(0xff322751),
         ),

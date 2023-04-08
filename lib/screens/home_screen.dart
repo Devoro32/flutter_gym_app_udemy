@@ -11,6 +11,17 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         drawer: const Drawer(),
+        //86
+        bottomNavigationBar: BottomNavigationBar(items: [
+          BottomNavigationBarItem(
+            label: 'Category',
+            icon: Icon(Icons.category),
+          ),
+          BottomNavigationBarItem(
+            label: 'Favourite',
+            icon: Icon(Icons.favorite),
+          ),
+        ]),
         appBar: AppBar(
           //replaced by the appbartheme in the main page
           //backgroundColor: const Color(0xff322751),
