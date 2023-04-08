@@ -6,15 +6,11 @@ import 'package:gym_app/main.dart';
 import 'package:gym_app/models/exercise_model.dart';
 import 'package:collection/collection.dart';
 
-class ExerciseDetailPage extends StatefulWidget {
+class ExerciseDetailPage extends StatelessWidget {
+  final Function(ExerciseModel) toggleFavourite;
   static String routeName = '/exerciseDetailPage';
-  const ExerciseDetailPage({super.key});
+  const ExerciseDetailPage({super.key, required this.toggleFavourite});
 
-  @override
-  State<ExerciseDetailPage> createState() => _ExerciseDetailPageState();
-}
-
-class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
   @override
   Widget build(BuildContext context) {
     final exerciseModel =
@@ -23,13 +19,7 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
       appBar: AppBar(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          ExerciseModel model = exerciseList
-              .firstWhere((element) => element.name == exerciseModel.name);
-          //update the model with the opposite value
-
-          setState(() {
-            model.isFavourite = !model.isFavourite;
-          });
+          toggleFavourite(exerciseModel);
         },
         backgroundColor: Colors.white,
         child: Icon(
@@ -39,144 +29,142 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.only(right: 20.0, left: 20),
-        child: Expanded(
-          child: ListView(
-            children: [
-              Image.network(
-                (exerciseModel.imageUrl),
-                height: 200,
-                width: double.infinity,
-                fit: BoxFit.cover,
+        child: ListView(
+          children: [
+            Image.network(
+              (exerciseModel.imageUrl),
+              height: 200,
+              width: double.infinity,
+              fit: BoxFit.cover,
+            ),
+            Text(
+              exerciseModel.name,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 25,
               ),
-              Text(
-                exerciseModel.name,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 25,
-                ),
+            ),
+            const Divider(
+              color: Colors.black,
+            ),
+            ...exerciseModel.steps
+                .mapIndexed((index, e) => ListTile(
+                      title: Text(e),
+                      leading: CircleAvatar(
+                        child: Text((index + 1).toString()),
+                      ),
+                    ))
+                .toList(),
+            const SizedBox(
+              height: 20,
+            ),
+            const Text(
+              'Targeted Muscle',
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
               ),
-              const Divider(
-                color: Colors.black,
-              ),
-              ...exerciseModel.steps
-                  .mapIndexed((index, e) => ListTile(
-                        title: Text(e),
-                        leading: CircleAvatar(
-                          child: Text((index + 1).toString()),
+            ),
+            Row(
+              children: exerciseModel.targetMuscles
+                  .map(
+                    (e) => Card(
+                      color: Colors.red,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          e,
+                          style: const TextStyle(color: Colors.white),
                         ),
-                      ))
+                      ),
+                    ),
+                  )
                   .toList(),
-              const SizedBox(
-                height: 20,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const Text(
+              'Equipment',
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
               ),
-              const Text(
-                'Targeted Muscle',
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              children: exerciseModel.equipment
+                  .map(
+                    (e) => Card(
+                      color: Colors.purple,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          e,
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    const CircleAvatar(
+                      backgroundColor: Colors.blue,
+                      child: Icon(
+                        Icons.repeat,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(exerciseModel.sets)
+                  ],
                 ),
-              ),
-              Row(
-                children: exerciseModel.targetMuscles
-                    .map(
-                      (e) => Card(
-                        color: Colors.red,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            e,
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                        ),
+                Row(
+                  children: [
+                    const CircleAvatar(
+                      backgroundColor: Colors.green,
+                      child: Icon(
+                        Icons.fitness_center,
+                        color: Colors.white,
                       ),
-                    )
-                    .toList(),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              const Text(
-                'Equipment',
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Text(exerciseModel.sets)
+                  ],
                 ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                children: exerciseModel.equipment
-                    .map(
-                      (e) => Card(
-                        color: Colors.purple,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            e,
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                        ),
+                Row(
+                  children: [
+                    const CircleAvatar(
+                      backgroundColor: Colors.orange,
+                      child: Icon(
+                        Icons.timer,
+                        color: Colors.white,
                       ),
-                    )
-                    .toList(),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      const CircleAvatar(
-                        backgroundColor: Colors.blue,
-                        child: Icon(
-                          Icons.repeat,
-                          color: Colors.white,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(exerciseModel.sets)
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const CircleAvatar(
-                        backgroundColor: Colors.green,
-                        child: Icon(
-                          Icons.fitness_center,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Text(exerciseModel.sets)
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const CircleAvatar(
-                        backgroundColor: Colors.orange,
-                        child: Icon(
-                          Icons.timer,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Text(exerciseModel.duration)
-                    ],
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-            ],
-          ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Text(exerciseModel.duration)
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+          ],
         ),
       ),
     );
