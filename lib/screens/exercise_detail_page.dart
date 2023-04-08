@@ -1,14 +1,20 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:gym_app/data/exercise.dart';
 import 'package:gym_app/main.dart';
 import 'package:gym_app/models/exercise_model.dart';
 import 'package:collection/collection.dart';
 
-class ExerciseDetailPage extends StatelessWidget {
+class ExerciseDetailPage extends StatefulWidget {
   static String routeName = '/exerciseDetailPage';
   const ExerciseDetailPage({super.key});
 
+  @override
+  State<ExerciseDetailPage> createState() => _ExerciseDetailPageState();
+}
+
+class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
   @override
   Widget build(BuildContext context) {
     final exerciseModel =
@@ -16,10 +22,18 @@ class ExerciseDetailPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          ExerciseModel model = exerciseList
+              .firstWhere((element) => element.name == exerciseModel.name);
+          //update the model with the opposite value
+
+          setState(() {
+            model.isFavourite = !model.isFavourite;
+          });
+        },
         backgroundColor: Colors.white,
         child: Icon(
-          Icons.favorite,
+          exerciseModel.isFavourite ? Icons.favorite : Icons.favorite_border,
           color: Colors.red,
         ),
       ),
@@ -135,7 +149,7 @@ class ExerciseDetailPage extends StatelessWidget {
                           color: Colors.white,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       Text(exerciseModel.sets)
@@ -150,7 +164,7 @@ class ExerciseDetailPage extends StatelessWidget {
                           color: Colors.white,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       Text(exerciseModel.duration)
