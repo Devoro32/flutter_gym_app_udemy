@@ -1,27 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:gym_app/data/exercise.dart';
 import 'package:gym_app/data/workout_category_list.dart';
+import 'package:gym_app/widget/exercise_card_widget.dart';
 import 'package:gym_app/widget/workout_category_widget.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   //79
   static String routeName = '/HomePage';
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int _index = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         drawer: const Drawer(),
         //86
-        bottomNavigationBar: BottomNavigationBar(items: [
-          BottomNavigationBarItem(
-            label: 'Category',
-            icon: Icon(Icons.category),
-          ),
-          BottomNavigationBarItem(
-            label: 'Favourite',
-            icon: Icon(Icons.favorite),
-          ),
-        ]),
+        bottomNavigationBar: BottomNavigationBar(
+            onTap: (value) {
+              _index = value;
+              setState(() {});
+            },
+            currentIndex: _index,
+            items: const [
+              BottomNavigationBarItem(
+                label: 'Category',
+                icon: Icon(Icons.category),
+              ),
+              BottomNavigationBarItem(
+                label: 'Favourite',
+                icon: Icon(Icons.favorite),
+              ),
+            ]),
         appBar: AppBar(
           //replaced by the appbartheme in the main page
           //backgroundColor: const Color(0xff322751),
@@ -52,9 +67,9 @@ class HomePage extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              const Text(
-                'Workout Categories',
-                style: TextStyle(
+              Text(
+                _index == 0 ? 'Workout Categories' : 'Favourite',
+                style: const TextStyle(
                   fontWeight: FontWeight.w900,
                   fontSize: 25,
                   fontStyle: FontStyle.italic,
@@ -63,15 +78,35 @@ class HomePage extends StatelessWidget {
               const Divider(
                 color: Colors.black,
               ),
-              Expanded(
-                child: ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: workoutCategoryList.length,
-                  itemBuilder: ((context, index) => WorkoutCategoryWidget(
-                        workOutCategoryModel: workoutCategoryList[index],
-                      )),
-                ),
-              ),
+              _index == 0
+                  ? Expanded(
+                      child: ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: workoutCategoryList.length,
+                        itemBuilder: ((context, index) => WorkoutCategoryWidget(
+                              workOutCategoryModel: workoutCategoryList[index],
+                            )),
+                      ),
+                    )
+                  : Expanded(
+                      child: ListView.separated(
+                        physics: const BouncingScrollPhysics(),
+                        separatorBuilder: (context, index) {
+                          return const SizedBox(
+                            height: 20,
+                          );
+                        },
+                        itemBuilder: (context, index) => ExerciseCardWidget(
+                          exerciseModel: exerciseList
+                              .where((element) => element.isFavourite)
+                              .toList()[index],
+                        ),
+                        itemCount: exerciseList
+                            .where((element) => element.isFavourite)
+                            .toList()
+                            .length,
+                      ),
+                    )
             ],
           ),
         ));
