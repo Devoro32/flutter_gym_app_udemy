@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gym_app/app_state.dart';
 import 'package:gym_app/data/exercise.dart';
 import 'package:gym_app/models/exercise_model.dart';
 import 'package:gym_app/widget/exercise_card_widget.dart';
@@ -27,20 +28,31 @@ class ExerciseListPage extends StatelessWidget {
           horizontal: 20,
           vertical: 20,
         ),
-        child: ListView.separated(
-          physics: const BouncingScrollPhysics(),
-          itemCount: listOfExercise.length,
-          separatorBuilder: (context, index) {
-            return const SizedBox(
-              height: 20,
-            );
-          },
-          itemBuilder: (context, index) {
-            return ExerciseCardWidget(
-              exerciseModel: listOfExercise[index],
-            );
-          },
-        ),
+        child: listOfExercise.isEmpty
+            ? Center(
+                child: Text(
+                  ' No exercise with diffuclty level: ${AppState.diffultyLevel} and equipment type: ${AppState.selectedEquipment.name}',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              )
+            : ListView.separated(
+                physics: const BouncingScrollPhysics(),
+                itemCount: listOfExercise.length,
+                separatorBuilder: (context, index) {
+                  return const SizedBox(
+                    height: 20,
+                  );
+                },
+                itemBuilder: (context, index) {
+                  return ExerciseCardWidget(
+                    exerciseModel: listOfExercise[index],
+                  );
+                },
+              ),
       ),
     );
   }

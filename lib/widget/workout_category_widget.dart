@@ -2,10 +2,13 @@
 //76
 
 import 'package:flutter/material.dart';
+import 'package:gym_app/app_state.dart';
 import 'package:gym_app/data/exercise.dart';
+import 'package:gym_app/models/exercise_model.dart';
 
 import 'package:gym_app/models/workout_category_model.dart';
 import 'package:gym_app/screens/exercise_list_page.dart';
+import 'package:gym_app/screens/filter_page.dart';
 
 class WorkoutCategoryWidget extends StatelessWidget {
   final WorkoutCategoryModel workOutCategoryModel;
@@ -16,6 +19,7 @@ class WorkoutCategoryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<ExerciseModel> list = [];
     return //75
         Column(
       children: [
@@ -24,14 +28,30 @@ class WorkoutCategoryWidget extends StatelessWidget {
         //navigate to a new screen
         InkWell(
           onTap: () {
+            //92- set the list to both by default
+            list = exerciseList
+                .where((element) =>
+                    element.category == workOutCategoryModel.categoryName)
+                .toList()
+                //92
+                .where(
+                    (element) => element.difficulty <= AppState.diffultyLevel)
+                .toList();
+
+            if (AppState.selectedEquipment == Equipment.equipment) {
+              list = list
+                  .where((element) => element.equipment.isNotEmpty)
+                  .toList();
+            } else if (AppState.selectedEquipment == Equipment.noEquipment) {
+              list =
+                  list.where((element) => element.equipment.isEmpty).toList();
+            }
+
             Navigator.of(context)
                 .pushNamed(ExerciseListPage.routeName, arguments: {
               'title': workOutCategoryModel.categoryName,
               //83
-              'listOfExercise': exerciseList
-                  .where((element) =>
-                      element.category == workOutCategoryModel.categoryName)
-                  .toList(),
+              'listOfExercise': list,
             });
           },
           child: ClipRRect(

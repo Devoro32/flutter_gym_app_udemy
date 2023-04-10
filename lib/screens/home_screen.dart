@@ -124,25 +124,42 @@ class _HomePageState extends State<HomePage> {
                             )),
                       ),
                     )
-                  : Expanded(
-                      child: ListView.separated(
-                        physics: const BouncingScrollPhysics(),
-                        separatorBuilder: (context, index) {
-                          return const SizedBox(
-                            height: 20,
-                          );
-                        },
-                        itemBuilder: (context, index) => ExerciseCardWidget(
-                          exerciseModel: exerciseList
-                              .where((element) => element.isFavourite)
-                              .toList()[index],
-                        ),
-                        itemCount: exerciseList
-                            .where((element) => element.isFavourite)
-                            .toList()
-                            .length,
-                      ),
-                    )
+                  : exerciseList
+                          .where((element) => element.isFavourite)
+                          .toList()
+                          .isEmpty
+                      ? const SizedBox(
+                          height: 400,
+                          child: Center(
+                            child: Text(
+                              ' No exercise marked as favourite.',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        )
+                      : Expanded(
+                          child: ListView.separated(
+                            physics: const BouncingScrollPhysics(),
+                            separatorBuilder: (context, index) {
+                              return const SizedBox(
+                                height: 20,
+                              );
+                            },
+                            itemBuilder: (context, index) => ExerciseCardWidget(
+                              exerciseModel: exerciseList
+                                  .where((element) => element.isFavourite)
+                                  .toList()[index],
+                            ),
+                            itemCount: exerciseList
+                                .where((element) => element.isFavourite)
+                                .toList()
+                                .length,
+                          ),
+                        )
             ],
           ),
         ));

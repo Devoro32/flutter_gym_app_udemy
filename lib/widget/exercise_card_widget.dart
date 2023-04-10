@@ -16,7 +16,7 @@ class ExerciseCardWidget extends StatelessWidget {
         );
       },
       child: Container(
-        height: 240,
+        height: 260,
         decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [
@@ -39,7 +39,7 @@ class ExerciseCardWidget extends StatelessWidget {
               ),
               child: Image.network(
                 exerciseModel.imageUrl,
-                height: 180,
+                height: 160,
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
@@ -49,15 +49,19 @@ class ExerciseCardWidget extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Column(
                 children: [
-                  Text(
-                    exerciseModel.name,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        exerciseModel.name,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
                   //create the rating out of 5 star
                   Row(
@@ -77,18 +81,30 @@ class ExerciseCardWidget extends StatelessWidget {
                 ],
               ),
             ),
+            SizedBox(
+              height: 5,
+            ),
             //user .join because the name would requlst as Equipment: [Lat Pulldown machine]
             //rather than Equipment: Lat Pulldown machine
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Text(
-                'Equipment: ${exerciseModel.equipment.join(',')}',
-                style: const TextStyle(
-                  color: Colors.grey,
-                  fontWeight: FontWeight.w300,
-                  fontSize: 13,
-                ),
-              ),
+              child: exerciseModel.equipment.isEmpty
+                  ? const Text(
+                      'No Equipment',
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w300,
+                        fontSize: 13,
+                      ),
+                    )
+                  : Text(
+                      'Equipment: ${exerciseModel.equipment.join(',')}',
+                      style: const TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w300,
+                        fontSize: 13,
+                      ),
+                    ),
             )
           ],
         ),
